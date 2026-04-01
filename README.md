@@ -1,10 +1,21 @@
 # Devstack App + API
+![Docker](https://img.shields.io/badge/docker-ready-blue)
+![Status](https://img.shields.io/badge/status-active-success)
+![License](https://img.shields.io/badge/license-GPL--3.0-green)
+
 A modern, reusable devstack to bootstrap fullstack projects (App + API) with Docker, Traefik, and zero setup friction.
 
 ---
 
-## Overview
+## Demo
 
+See how easy it is to start the entire stack:
+
+![Devstack Demo](./docs/demo.gif)
+
+---
+
+## Overview
 This project provides a standardized development environment for modern fullstack applications.
 
 Instead of reinventing the setup for every project, this devstack gives you a **ready-to-use foundation** focused on:
@@ -16,8 +27,21 @@ Instead of reinventing the setup for every project, this devstack gives you a **
 
 ---
 
-## Architecture
+## Quick Start
+```bash
+git clone https://github.com/mamura/devstack.git
+cd devstack
 
+make init
+```
+
+Then access:
+* [http://app.localhost](http://app.localhost)
+* [http://api.localhost](http://api.localhost)
+
+---
+
+## Architecture
 This devstack is designed for projects with a simple and scalable structure:
 
 ```
@@ -33,68 +57,27 @@ project/
 
 * Docker & Docker Compose
 * Traefik (reverse proxy)
-* Makefile for command orchestration
-* Bootstrap script for environment setup
-
----
-
-## Getting Started
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/mamura/devstack.git
-cd devstack
-```
-
----
-
-### 2. Bootstrap the environment
-
-```bash
-make bootstrap
-```
-
-This will:
-
-* Ensure the Docker network exists
-* Prepare the environment for first run
-
----
-
-### 3. Start the stack
-
-```bash
-make up
-```
-
----
-
-## Access the applications
-
-Once running, access your services via:
-
-* [http://app.localhost](http://app.localhost)
-* [http://api.localhost](http://api.localhost)
-
-No ports. No confusion. Just clean URLs.
+* Makefile (command orchestration)
+* Bootstrap script (environment setup)
 
 ---
 
 ## Available Commands
 
 ```bash
-make bootstrap   # Prepare environment
-make up          # Start containers
-make down        # Stop containers
-make logs        # View logs
-make restart     # Restart stack
+make init       # Full setup (setup + bootstrap + up)
+make setup      # Create .env from example
+make bootstrap  # Prepare environment (network)
+make up         # Start containers
+make down       # Stop containers
+make logs       # View logs
+make restart    # Restart stack
+make ps         # List containers
 ```
 
 ---
 
 ## Why this devstack?
-
 Because setting up environments shouldn't slow you down.
 
 This project helps you:
@@ -102,7 +85,7 @@ This project helps you:
 * Avoid port conflicts
 * Standardize project setup
 * Reduce onboarding friction
-* Focus on building features instead of configuring infra
+* Focus on building features instead of configuring infrastructure
 
 ---
 
@@ -126,7 +109,7 @@ Feel free to open issues, suggest improvements, or submit pull requests.
 
 ## License
 
-GPL-3.0 license
+GPL-3.0
 
 ---
 

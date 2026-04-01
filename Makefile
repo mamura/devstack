@@ -1,6 +1,8 @@
 SHELL := /bin/bash
 
 COMPOSE_FILE=infra/compose.yaml
+INFRA_ENV_FILE=infra/.env
+INFRA_ENV_EXAMPLE=infra/.env.example
 
 .PHONY: help init setup bootstrap up down logs restart ps
 
@@ -8,7 +10,7 @@ help:
 	@echo ""
 	@echo "Available commands:"
 	@echo "  make init       - Full first-time setup (setup + bootstrap + up)"
-	@echo "  make setup      - Copy .env.example to .env if needed"
+	@echo "  make setup      - Copy infra/.env.example to infra/.env if needed"
 	@echo "  make bootstrap  - Prepare environment (create Docker network)"
 	@echo "  make up         - Start the stack"
 	@echo "  make down       - Stop the stack"
@@ -17,40 +19,37 @@ help:
 	@echo "  make ps         - List running containers"
 	@echo ""
 
-## First-time setup
 init: setup bootstrap up
 
-## Create .env if not exists
 setup:
-	@if [ ! -f .env ]; then \
-		cp .env.example .env; \
-		echo ".env created from .env.example"; \
+	@if [ ! -f $(INFRA_ENV_FILE) ]; then \
+		if [ -f $(INFRA_ENV_EXAMPLE) ]; then \
+			cp $(INFRA_ENV_EXAMPLE) $(INFRA_ENV_FILE); \
+			echo "$(INFRA_ENV_FILE) created from $(INFRA_ENV_EXAMPLE)"; \
+		else \
+			echo "$(INFRA_ENV_EXAMPLE) not found!"; \
+			exit 1; \
+		fi; \
 	else \
-		echo ".env already exists"; \
+		echo "$(INFRA_ENV_FILE) already exists"; \
 	fi
 
-## Prepare environment
 bootstrap:
 	@chmod +x ./infra/scripts/bootstrap.sh
 	@./infra/scripts/bootstrap.sh
 
-## Start containers
 up:
-	@docker compose -f $(COMPOSE_FILE) up -d
+	@docker compose --env-file $(INFRA_ENV_FILE) -f $(COMPOSE_FILE) up -d
 
-## Stop containers
 down:
-	@docker compose -f $(COMPOSE_FILE) down
+	@docker compose --env-file $(INFRA_ENV_FILE) -f $(COMPOSE_FILE) down
 
-## Logs
 logs:
-	@docker compose -f $(COMPOSE_FILE) logs -f
+	@docker compose --env-file $(INFRA_ENV_FILE) -f $(COMPOSE_FILE) logs -f
 
-## Restart stack
 restart:
-	@docker compose -f $(COMPOSE_FILE) down
-	@docker compose -f $(COMPOSE_FILE) up -d
+	@docker compose --env-file $(INFRA_ENV_FILE) -f $(COMPOSE_FILE) down
+	@docker compose --env-file $(INFRA_ENV_FILE) -f $(COMPOSE_FILE) up -d
 
-## List containers
 ps:
-	@docker compose -f $(COMPOSE_FILE) ps
+	@docker compose --env-file $(INFRA_ENV_FILE) -f $(COMPOSE_FILE) ps

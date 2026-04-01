@@ -3,7 +3,7 @@
 set -e
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-ENV_FILE="$ROOT_DIR/.env"
+ENV_FILE="$ROOT_DIR/infra/.env"
 
 if ! command -v docker >/dev/null 2>&1; then
   echo "Docker não está instalado ou não está disponível no PATH."
