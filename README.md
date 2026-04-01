@@ -11,7 +11,7 @@ A modern, reusable devstack to bootstrap fullstack projects (App + API) with Doc
 
 See how easy it is to start the entire stack:
 
-![Devstack Demo](./docs/demo.gif)
+![Devstack Demo](./demo.gif)
 
 ---
 
